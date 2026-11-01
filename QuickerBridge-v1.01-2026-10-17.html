@@ -1154,6 +1154,56 @@ body[data-view]:not([data-view="diagrams"]) .chart-toolbar .display-controls{dis
 .zone-table .zt-none{display:block;text-align:center;color:var(--muted)}
 .zone-table .icon-button{min-height:0;padding:2px 4px}
 .span-zones .add-button{margin-top:6px}
+/* Galaxy Z Fold 8 unfolded in landscape (~816 × 536 CSS px) and other wide, short
+   screens: slim header on one line, narrower input panel that scrolls on its own,
+   result toolbar that wraps instead of widening the page, diagrams sized from the
+   screen height. */
+@media(orientation:landscape) and (max-height:620px) and (min-width:700px){
+  .topbar{flex-wrap:nowrap;height:48px;min-height:0;padding:0 14px;gap:12px}
+  .brand{font-size:1.1rem;gap:8px}
+  .brand-mark{font-size:1.7rem}
+  .brand small{display:none}
+  .release-info,.local-label{display:none}
+  .top-warning{order:0;flex:1 1 auto;margin:0 auto;border-radius:999px;padding:3px 10px;font-size:.6875rem}
+  .top-warning>span[data-i18n]{white-space:nowrap}
+  .header-right{gap:10px}
+  .method-open{white-space:nowrap;padding:5px 10px;font-size:.75rem}
+  .workspace{grid-template-columns:288px minmax(0,1fr);gap:12px;padding:10px 12px 8px}
+  .inputs{position:sticky;top:8px;max-height:calc(100svh - 16px)}
+  .panel-heading{padding:10px 14px 8px}
+  .project-bar{padding:0 14px 8px}
+  .input-tabs{padding:0 12px;gap:10px}
+  .input-tabs button{padding:8px 1px;font-size:.8125rem;flex:none}
+  .case-band button{padding:8px 11px 9px;font-size:.8125rem}
+  .case-band .cb-rule{margin:7px 4px 9px}
+  #input-content{padding:12px 14px}
+  .input-footer{padding:8px 14px}
+  .structure-panel{padding:6px 12px 4px}
+  #beam{height:88px}
+  .metrics{margin-top:8px;grid-template-columns:repeat(4,minmax(0,1fr))}
+  .metric{padding:6px 10px 7px}
+  .metric-label{font-size:.625rem;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .metric-value{font-size:1.1rem}
+  .metric-value small{font-size:.625rem}
+  .result-toolbar{margin-bottom:8px}
+  .chart-toolbar{flex-wrap:wrap;row-gap:4px;margin-top:6px}
+  .chart-toolbar .display-controls{flex:1 1 100%;justify-content:flex-start;flex-wrap:wrap;gap:6px 10px;min-width:0}
+  .display-controls .segmented{max-width:100%;overflow-x:auto;scrollbar-width:none}
+  .view-tabs{gap:12px}
+  .view-tabs button{font-size:.8125rem;padding:8px 1px}
+  .result-view{padding:8px 8px 0}
+  .chart-row{grid-template-columns:64px minmax(0,1fr)}
+  .rp-row{grid-template-columns:96px minmax(0,1fr)}
+  .res-diag-help{margin-left:108px}
+  .res-sheet{grid-template-columns:1fr}
+  :root,.focus-results{--plot-h:clamp(84px,calc((100svh - 150px) / 3.55),170px)}
+  dialog.section-dialog,dialog.qb-float{max-height:calc(100svh - 12px);max-width:calc(100vw - 12px)}
+}
+@media(pointer:coarse){
+  .input-tabs button,.view-tabs button{min-height:40px}
+  .segmented button{min-height:36px}
+  .span-count button{min-height:38px}
+}
 </style>
 
 
