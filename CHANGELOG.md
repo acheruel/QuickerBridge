@@ -1,5 +1,18 @@
 # QuickerBridge — version history
 
+## What's new in 1.02
+
+- **A bridge can arrive in the address.** `…/QuickerBridge/#project=<project JSON in
+  base64url>` opens that project at start-up, as File › Open would: validated by the
+  engine, with the unsaved-changes dialog when there is work to protect. The fragment is
+  read in the browser and removed from the address at once. BridgeSketch 3D 0.7.3 uses it
+  (File › Export to QuickerBridge): spans, continuity, steel or NEBT girder, slab and
+  wearing-surface loads, and the inputs of the simplified method (N, S, Sc, Wc, skew).
+- Project files written by BridgeSketch 3D carry only the fields it knows; the others take
+  the QuickerBridge defaults. No change to the project schema (17) or to any result.
+- Layout for the Galaxy Z Fold unfolded in landscape and other wide, short screens
+  (published on 2026-11-01 from another session, now in the source).
+
 ## What's new in 1.01
 
 - **Truck load fraction FT for steel grid, aluminum and transverse wood decks on steel

@@ -1,2 +1,2 @@
 @echo off
-start "" "%~dp0QuickerBridge-v1.01-2026-10-17.html"
+start "" "%~dp0QuickerBridge-v1.02-2026-11-13.html"

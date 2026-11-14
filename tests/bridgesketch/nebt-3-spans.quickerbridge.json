@@ -1,0 +1,73 @@
+{
+  "format": "QuickerBridgeProject",
+  "schema_version": 17,
+  "app_version": "1.01",
+  "name": "BridgeSketch 3D bridge",
+  "saved_at": "2026-11-14T02:57:40.212Z",
+  "model": {
+    "spans": [
+      {
+        "length": 30,
+        "section": 0,
+        "zones": [],
+        "simple": true
+      },
+      {
+        "length": 35,
+        "section": 0,
+        "zones": [],
+        "simple": true
+      },
+      {
+        "length": 30,
+        "section": 0,
+        "zones": [],
+        "simple": true
+      }
+    ],
+    "supports": [
+      "pin",
+      "roller",
+      "roller",
+      "roller"
+    ],
+    "sections": [
+      {
+        "name": "NEBT 1600",
+        "kind": "nebt",
+        "nebt": "NEBT1600",
+        "composite": {
+          "slab_thickness": 225,
+          "haunch": 50,
+          "effective_width": 2400
+        }
+      }
+    ],
+    "nonprismatic": false,
+    "dead": [
+      {
+        "name": "Concrete slab 225 mm",
+        "w": 12.96,
+        "stage": "steel"
+      },
+      {
+        "name": "Wearing surface 65 mm",
+        "w": 3.67,
+        "stage": "3n"
+      }
+    ],
+    "distribution": {
+      "bridge_type": "slab_on_girder",
+      "deck_thickness": 225,
+      "slab_width": 12,
+      "girders": 5,
+      "spacing": 2.4,
+      "overhang": 1.2,
+      "carriageway": 11.18,
+      "skew": 15,
+      "girder": "interior",
+      "apply": true,
+      "enabled": true
+    }
+  }
+}

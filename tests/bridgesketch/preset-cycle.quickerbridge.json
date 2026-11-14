@@ -1,0 +1,71 @@
+{
+  "format": "QuickerBridgeProject",
+  "schema_version": 17,
+  "app_version": "1.01",
+  "name": "BridgeSketch 3D bridge",
+  "saved_at": "2026-11-14T02:57:40.223Z",
+  "model": {
+    "spans": [
+      {
+        "length": 45,
+        "section": 0,
+        "zones": [],
+        "simple": false
+      }
+    ],
+    "supports": [
+      "pin",
+      "roller"
+    ],
+    "sections": [
+      {
+        "name": "S1",
+        "kind": "girder",
+        "depth": 900,
+        "top_width": 500,
+        "top_thickness": 50,
+        "web_thickness": 14,
+        "bottom_width": 500,
+        "bottom_thickness": 50,
+        "composite": {
+          "slab_thickness": 225,
+          "haunch": 50,
+          "effective_width": 3800
+        }
+      }
+    ],
+    "nonprismatic": false,
+    "dead": [
+      {
+        "name": "Concrete slab 225 mm",
+        "w": 20.52,
+        "stage": "steel"
+      },
+      {
+        "name": "Wearing surface 65 mm",
+        "w": 5.8,
+        "stage": "3n"
+      }
+    ],
+    "distribution": {
+      "bridge_type": "slab_on_girder",
+      "deck_thickness": 225,
+      "slab_width": 4.8,
+      "girders": 2,
+      "spacing": 3.8,
+      "overhang": 0.5,
+      "carriageway": 3.9,
+      "skew": 0,
+      "girder": "interior",
+      "apply": false,
+      "enabled": false
+    },
+    "live": {
+      "source": "pedestrian"
+    },
+    "pedestrian": {
+      "width_source": "manual",
+      "width": 3800
+    }
+  }
+}

@@ -89,3 +89,6 @@ Object.assign(words.en,{jointTitle:'Deck cut',jointEnable:'Cut the deck at a sta
 // v1.01: zone table of the Sections tab.
 Object.assign(words.fr,{zbEnd:'Fin %',zbProfile:'Variation',zbStart:'Départ',zbTarget:'Cible',zbPlates:'Tôles de',zbConstant:'Const.',zbLinear:'Lin.',zbParabolic:'Parab.',zbPlatesStart:'Départ',zbPlatesEnd:'Cible',zbPlatesDeep:'Haute'});
 Object.assign(words.en,{zbEnd:'End %',zbProfile:'Variation',zbStart:'Start',zbTarget:'Target',zbPlates:'Plates from',zbConstant:'Const.',zbLinear:'Lin.',zbParabolic:'Parab.',zbPlatesStart:'Start',zbPlatesEnd:'Target',zbPlatesDeep:'Deeper'});
+// v1.02: project received in the address (#project=…).
+Object.assign(words.fr,{linkInvalid:'Le pont reçu dans le lien est illisible ou incompatible avec cette version de QuickerBridge.'});
+Object.assign(words.en,{linkInvalid:'The bridge received in the link is unreadable or incompatible with this version of QuickerBridge.'});

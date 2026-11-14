@@ -1,0 +1,71 @@
+{
+  "format": "QuickerBridgeProject",
+  "schema_version": 17,
+  "app_version": "1.01",
+  "name": "BridgeSketch 3D bridge",
+  "saved_at": "2026-11-14T02:57:40.214Z",
+  "model": {
+    "spans": [
+      {
+        "length": 15,
+        "section": 0,
+        "zones": [],
+        "simple": false
+      },
+      {
+        "length": 20,
+        "section": 0,
+        "zones": [],
+        "simple": false
+      },
+      {
+        "length": 15,
+        "section": 0,
+        "zones": [],
+        "simple": false
+      }
+    ],
+    "supports": [
+      "pin",
+      "roller",
+      "roller",
+      "roller"
+    ],
+    "sections": [
+      {
+        "name": "Slab strip 1 m",
+        "kind": "ei",
+        "stiffness_input": "concrete",
+        "I_direct": 0.042667,
+        "fc": 35,
+        "unit_weight": 24
+      }
+    ],
+    "nonprismatic": false,
+    "dead": [
+      {
+        "name": "Slab 800 mm",
+        "w": 19.2,
+        "stage": "steel"
+      },
+      {
+        "name": "Wearing surface 65 mm",
+        "w": 1.53,
+        "stage": "3n"
+      }
+    ],
+    "distribution": {
+      "bridge_type": "slab",
+      "deck_thickness": 600,
+      "slab_width": 12,
+      "girders": 5,
+      "spacing": 2.4,
+      "overhang": 1.2,
+      "carriageway": 11.18,
+      "skew": 0,
+      "girder": "interior",
+      "apply": true,
+      "enabled": true
+    }
+  }
+}

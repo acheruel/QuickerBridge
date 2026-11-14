@@ -206,3 +206,5 @@ document.addEventListener('pointerdown',e=>{
  addEventListener('resize',()=>$$('dialog.qb-float[open]').forEach(qbKeepInView));}
 // Fallback without layout callbacks (background tab): re-check after an edit.
 ['change','click'].forEach(type=>document.addEventListener(type,e=>{const dlg=e.target.closest?.('dialog.qb-float');if(dlg)setTimeout(()=>qbKeepInView(dlg),80);}));
+// v1.02: a project sent in the address (BridgeSketch 3D › Export to QuickerBridge) opens once the engine is ready.
+document.addEventListener('DOMContentLoaded',()=>{qbOpenLinked();},{once:true});

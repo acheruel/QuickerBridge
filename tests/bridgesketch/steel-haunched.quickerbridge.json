@@ -1,0 +1,136 @@
+{
+  "format": "QuickerBridgeProject",
+  "schema_version": 17,
+  "app_version": "1.01",
+  "name": "BridgeSketch 3D bridge",
+  "saved_at": "2026-11-14T02:57:40.208Z",
+  "model": {
+    "spans": [
+      {
+        "length": 28,
+        "section": 0,
+        "zones": [
+          {
+            "end": 0.7,
+            "section": 0
+          },
+          {
+            "end": 1,
+            "section": 0,
+            "end_section": 1,
+            "profile": "parabolic",
+            "plates": "deep"
+          }
+        ],
+        "simple": false
+      },
+      {
+        "length": 36,
+        "section": 0,
+        "zones": [
+          {
+            "end": 0.3,
+            "section": 1,
+            "end_section": 0,
+            "profile": "parabolic",
+            "plates": "deep"
+          },
+          {
+            "end": 0.7,
+            "section": 0
+          },
+          {
+            "end": 1,
+            "section": 0,
+            "end_section": 1,
+            "profile": "parabolic",
+            "plates": "deep"
+          }
+        ],
+        "simple": false
+      },
+      {
+        "length": 28,
+        "section": 0,
+        "zones": [
+          {
+            "end": 0.3,
+            "section": 1,
+            "end_section": 0,
+            "profile": "parabolic",
+            "plates": "deep"
+          },
+          {
+            "end": 1,
+            "section": 0
+          }
+        ],
+        "simple": false
+      }
+    ],
+    "supports": [
+      "pin",
+      "roller",
+      "roller",
+      "roller"
+    ],
+    "sections": [
+      {
+        "name": "S1",
+        "kind": "girder",
+        "depth": 1300,
+        "top_width": 500,
+        "top_thickness": 50,
+        "web_thickness": 14,
+        "bottom_width": 500,
+        "bottom_thickness": 50,
+        "composite": {
+          "slab_thickness": 225,
+          "haunch": 50,
+          "effective_width": 2400
+        }
+      },
+      {
+        "name": "S2",
+        "kind": "girder",
+        "depth": 2200,
+        "top_width": 500,
+        "top_thickness": 50,
+        "web_thickness": 14,
+        "bottom_width": 500,
+        "bottom_thickness": 50,
+        "composite": {
+          "slab_thickness": 225,
+          "haunch": 50,
+          "effective_width": 2400
+        }
+      }
+    ],
+    "nonprismatic": true,
+    "dead": [
+      {
+        "name": "Concrete slab 225 mm",
+        "w": 12.96,
+        "stage": "steel"
+      },
+      {
+        "name": "Wearing surface 65 mm",
+        "w": 3.67,
+        "stage": "3n"
+      }
+    ],
+    "distribution": {
+      "bridge_type": "slab_on_girder",
+      "deck_thickness": 225,
+      "slab_width": 12,
+      "girders": 5,
+      "spacing": 2.4,
+      "overhang": 1.2,
+      "carriageway": 11.18,
+      "skew": 20,
+      "girder": "interior",
+      "apply": true,
+      "enabled": true
+    }
+  }
+}

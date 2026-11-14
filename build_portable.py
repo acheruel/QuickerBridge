@@ -107,6 +107,7 @@ def source_entries():
     for pattern in (
         "quickerbridge/*.py",
         "tests/*.py",
+        "tests/bridgesketch/*.quickerbridge.json",  # v1.02: files of BridgeSketch 3D
         "examples/*.quickerbridge.json",
         "docs/screenshots/*",
         ".github/workflows/*.yml",

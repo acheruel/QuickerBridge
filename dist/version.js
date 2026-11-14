@@ -1,1 +1,1 @@
-window.QB_META={"version": "1.01", "date": "2026-10-17", "author": "Anthony Chéruel", "schema": 17};
+window.QB_META={"version": "1.02", "date": "2026-11-13", "author": "Anthony Chéruel", "schema": 17};

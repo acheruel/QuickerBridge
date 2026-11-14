@@ -1,0 +1,69 @@
+{
+  "format": "QuickerBridgeProject",
+  "schema_version": 17,
+  "app_version": "1.01",
+  "name": "BridgeSketch 3D bridge",
+  "saved_at": "2026-11-14T02:57:40.220Z",
+  "model": {
+    "spans": [
+      {
+        "length": 34,
+        "section": 0,
+        "zones": [],
+        "simple": false
+      },
+      {
+        "length": 46,
+        "section": 0,
+        "zones": [],
+        "simple": false
+      },
+      {
+        "length": 42,
+        "section": 0,
+        "zones": [],
+        "simple": false
+      },
+      {
+        "length": 30,
+        "section": 0,
+        "zones": [],
+        "simple": false
+      }
+    ],
+    "supports": [
+      "pin",
+      "roller",
+      "roller",
+      "roller",
+      "roller"
+    ],
+    "sections": [
+      {
+        "name": "Steel box",
+        "kind": "ei"
+      }
+    ],
+    "nonprismatic": false,
+    "dead": [
+      {
+        "name": "Wearing surface 65 mm",
+        "w": 10.39,
+        "stage": "3n"
+      }
+    ],
+    "distribution": {
+      "bridge_type": "slab_on_girder",
+      "deck_thickness": 225,
+      "slab_width": 13.6,
+      "girders": 2,
+      "spacing": 6.1,
+      "overhang": 3.75,
+      "carriageway": 10.2,
+      "skew": 10,
+      "girder": "interior",
+      "apply": false,
+      "enabled": false
+    }
+  }
+}

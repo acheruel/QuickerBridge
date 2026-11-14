@@ -36,6 +36,25 @@ async function openSelectedProject(file) {
  pendingProject=project;
  if(updateProjectState()){$('#replace-dialog').showModal()}else{pendingProject=null;applyProject(project)}
 }
+// v1.02: project received in the address, "#project=<base64url of the project JSON>" (sent by BridgeSketch 3D).
+// The fragment never leaves the browser. Returns the JSON text, '' when unreadable, null when there is none.
+function qbLinkedText(hash){
+ const m=/[#&]project=([A-Za-z0-9_-]+)/.exec(hash||'');if(!m)return null;
+ try{const b=atob(m[1].replace(/-/g,'+').replace(/_/g,'/'));return new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(b,c=>c.charCodeAt(0)))}catch(e){return ''}
+}
+// Opened like a file: validated by the engine, then through the unsaved-changes dialog when there is work to protect.
+async function qbOpenLinked(){
+ const text=qbLinkedText(location.hash);if(text===null)return;
+ history.replaceState(null,'',location.pathname+location.search);
+ for(let i=0;i<2400&&!(engineReady&&model);i++)await new Promise(r=>setTimeout(r,50));
+ let project;
+ try{if(!engineReady||!model)throw Error('engine.timeout');if(!text||text.length>1024*1024)throw Error('project.link');project=await solver.request('validate_project',{text})}catch(e){console.error(e);showError(t('linkInvalid'));return}
+ // Through the unsaved-changes dialog when there is work to protect; the offer to restore the last session stays until
+ // the bridge that was sent actually replaces the model.
+ pendingProject=project;
+ if(updateProjectState())$('#replace-dialog').showModal();
+ else{pendingProject=null;if(typeof qbAutoFound!=='undefined'&&qbAutoFound){qbAutoFound=null;qbRestoreBar(null);qbAutoArmed=true;}applyProject(project);}
+}
 function clearExcelFile(){const file=$('#excel-file');if(file){URL.revokeObjectURL(file.href);file.remove();}}
 async function downloadExcel() {
  if(!excelAvailable){$('#error').textContent=t('excelUnavailable');$('#error').classList.remove('hidden');return;}
