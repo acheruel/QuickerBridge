@@ -157,10 +157,8 @@ def test_mtq_automatic_fraction_by_response():
     _, f63 = mtq_run(False, 0.63)
     assert auto["vehicle"]["mtq_auto"] and not f80["vehicle"]["mtq_auto"]
     x = np.array(auto["x"])
-    zone = (x >= 27.84 - 1e-6) & (x <= 41.76 + 1e-6)  # 0.20 L either side of the pier
-    m_hi = np.array(auto["max"]["M"])
-    np.testing.assert_allclose(m_hi[~zone], np.array(f63["max"]["M"])[~zone], atol=1e-6)
-    np.testing.assert_allclose(m_hi[zone], np.array(f80["max"]["M"])[zone], atol=1e-6)
+    # v1.03: M+ at 63 % everywhere, near the pier too.
+    np.testing.assert_allclose(auto["max"]["M"], f63["max"]["M"], atol=1e-6)
     assert min(auto["min"]["M"]) == pytest.approx(-3659.4, abs=1.0)
     np.testing.assert_allclose(auto["min"]["M"], f80["min"]["M"], atol=1e-6)
     for sense in ("min", "max"):
@@ -198,8 +196,9 @@ def test_mtq_single_span_and_hinge_use_63():
         assert result["case_max"][3 * nx + k]["fraction"] == 0.63
 
 
-def test_mtq_integral_abutment_zone_keeps_63_for_positive_moment():
-    """Only the M− zones over interior piers take 80 % for M+ (user rule)."""
+def test_mtq_positive_moment_is_63_everywhere():
+    """v1.03: M+ takes 63 % at every station (the M− zones over interior
+    piers took 80 % up to 1.02); M− keeps 80 % everywhere."""
     from quickerbridge.engine import Basis, mtq_lane_fractions
 
     model, _ = mtq_run(True)
@@ -211,7 +210,9 @@ def test_mtq_integral_abutment_zone_keeps_63_for_positive_moment():
     near_abutment = x <= 0.15 * 34.8 - 1e-6
     near_pier = (x >= 27.84 + 1e-6) & (x <= 41.76 - 1e-6)
     assert np.all(m_hi[near_abutment] == 0.63)
-    assert np.all(m_hi[near_pier] == 0.8)
+    assert np.all(m_hi[near_pier] == 0.63)
+    low, _ = mtq_lane_fractions(model, basis)
+    assert np.all(low[nx : 2 * nx] == 0.8)
 
 
 def test_mtq_default_on_for_old_projects_and_manual_position():

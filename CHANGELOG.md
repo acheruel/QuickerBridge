@@ -12,6 +12,11 @@
 - **FT summary table:** the shear fraction FT V is shown without the skew factor Fs, which
   keeps its own row; a note recalls that the analysis applies FT V × Fs to the shear of the
   exterior girder (or portion). The zone marks on the V diagram read "FT·Fs" when Fs > 1.
+- **MTQ automatic fraction (CL-750-QC): M+ at 63 % everywhere.** The bulletin gives 63 %
+  for the positive moment of multi-span bridges without exception; the M− zones over
+  interior piers no longer take 80 % for M+ (up to 1.02). M− stays at 80 % everywhere,
+  as do deflections and reactions at continuous piers. M+ near the piers can decrease
+  slightly (it was conservative).
 - No change to the project schema (17).
 
 ## What's new in 1.02

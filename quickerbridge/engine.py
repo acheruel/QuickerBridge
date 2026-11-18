@@ -18,7 +18,6 @@ import pycba as cba
 from .models import Model
 from .distribution import (
     applied as ft_applied,
-    effective_spans,
     station_factors,
     truck_fraction,
 )
@@ -1053,15 +1052,12 @@ def mtq_lane_fractions(model: Model, basis):
     (one value per column and per envelope sense):
 
     * single span: 0.63 everywhere;
-    * multi-span: V 0.63 (both senses); M "high" (positive moment) 0.63 except
-      at stations inside the negative-moment zones around the interior piers,
-      where 0.80 (the integral-abutment zones keep 0.63); M "low" (negative moment) 0.80; D, Mr 0.80;
+    * multi-span: V 0.63 (both senses); M "high" (positive moment) 0.63 at
+      every station (v1.03); M "low" (negative moment) 0.80; D, Mr 0.80;
     * R: 0.63 at the end abutments and at supports next to a simple span
       (hinge: no deck continuity), 0.80 at continuous interior supports.
 
-    The M− zones are the geometric ones of S6-25 Figure 5.1
-    (``distribution.effective_spans``, with h = 0), independent of whether FT
-    is enabled. A manual position record uses 0.80 (no target response).
+    A manual position record uses 0.80 (no target response).
     """
     nx, ns = basis.nx, basis.ns
     count = basis.nresponse
@@ -1070,11 +1066,10 @@ def mtq_lane_fractions(model: Model, basis):
         low[:], high[:] = 0.63, 0.63
         return low, high
     low[:nx] = high[:nx] = 0.63
-    zones = [z[4] for z in effective_spans(model, 0.0, 0.0)[1] if z[3] != "abutment"]
-    positive = np.full(nx, 0.63)
-    for a, b in zones:
-        positive[(basis.x >= a - 1e-9) & (basis.x <= b + 1e-9)] = 0.8
-    high[nx : 2 * nx] = positive
+    # v1.03: M+ at 63 % at every station, as the bulletin says ("moment
+    # positif ... des ponts à travées multiples"); up to 1.02 the M− zones
+    # over interior piers took 80 %.
+    high[nx : 2 * nx] = 0.63
     breaks = deck_breaks(model)
     for k in range(ns):
         if breaks[k]:
