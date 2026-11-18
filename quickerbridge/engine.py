@@ -41,7 +41,6 @@ from .loads import (
     vehicle_variants,
 )
 
-
 # v1.0: numerical mesh chosen from the geometry (no user precision setting).
 # Calibrated by tests/mesh_study.py against a 0.02 m / 192-sample reference.
 MESH_OVERRIDE = None  # dict, for convergence studies only
@@ -522,6 +521,57 @@ class Basis:
         self.lever = np.maximum(self.x[None, :] - self.support_x[:, None], 0)
         self.left = (self.support_x[:, None] < self.cut[None, :]).astype(float)
         self.max_equilibrium_error = 0.0
+        self._set_parts()
+
+    def _set_parts(self):
+        """Independent parts of the deck (v1.03).
+
+        A split pier, a support next to a simple span and a deck cut carry
+        neither shear nor moment across: a load on one side has no effect on
+        the other. The equilibrium formulas leave rounding noise there
+        (1e-12), enough to pass for a favourable effect and load a span of
+        the other structure. ``part_lo`` / ``part_hi`` give the range of parts
+        of every response column (a support on a boundary serves both)."""
+        tol = 1e-9 * max(1.0, self.length)
+        bounds = [
+            float(self.support_x[k])
+            for k, broken in enumerate(deck_breaks(self.model))
+            if broken and 0 < k < self.ns - 1
+        ]
+        joint = self.structure.joint
+        if joint and joint[1] == "cut":
+            bounds.append(joint[0])
+        self.part_bounds = b = np.array(sorted(set(bounds)))
+        if not len(b):
+            return
+        station = np.array(
+            [
+                np.sum((b < x - tol) | ((np.abs(b - x) <= tol) & (side == "right")))
+                for x, side in zip(self.x, self.sides)
+            ]
+        )
+        sup_lo = np.array(
+            [np.sum(b < x + tol) - np.any(np.abs(b - x) <= tol) for x in self.support_x]
+        )
+        sup_hi = np.array([np.sum(b <= x + tol) for x in self.support_x])
+        self.part_lo = np.r_[station, station, station, sup_lo, sup_lo]
+        self.part_hi = np.r_[station, station, station, sup_hi, sup_hi]
+        self._part_tol = tol
+
+    def coupled(self, positions, columns=None):
+        """Whether loads at ``positions`` can act on the response columns
+        (all of them, or one column per position). None: everything is."""
+        b = self.part_bounds
+        if not len(b):
+            return None
+        p = np.asarray(positions, float)
+        lo = np.searchsorted(b, p - self._part_tol, side="left")
+        hi = np.searchsorted(b, p + self._part_tol, side="right")
+        if columns is None:
+            return (lo[:, None] <= self.part_hi[None, :]) & (
+                hi[:, None] >= self.part_lo[None, :]
+            )
+        return (lo <= self.part_hi[columns]) & (hi >= self.part_lo[columns])
 
     def read_result(self, ba):
         """Member-local interpolation; R is read from support reactions only."""
@@ -593,7 +643,9 @@ class Basis:
             - mr @ self.left
             - np.maximum(self.x[None, :] - p[:, None], 0) * on[:, None]
         )
-        return np.c_[v, m, d, r, mr]
+        out = np.c_[v, m, d, r, mr]
+        mask = self.coupled(p)
+        return out if mask is None else out * mask
 
     def unit_columns(self, positions, cols):
         """Like :meth:`unit` for the crossing rows of :func:`crossing_rows`:
@@ -638,6 +690,9 @@ class Basis:
         has = cols[:, 3] >= 0
         out[has, 3] = r[has, k[has]]
         out[has, 4] = mr[has, k[has]]
+        if len(self.part_bounds):
+            out[:, :3] *= self.coupled(p, s)[:, None]
+            out[has, 3:] *= self.coupled(p[has], cols[has, 3])[:, None]
         return out
 
     def static_dead(self):
@@ -697,12 +752,15 @@ class Basis:
         """(spans, responses): response to 1 kN/m on each span alone.
         Geometry only, so it is cached on this immutable Basis."""
         if getattr(self, "_span_units", None) is None:
-            self._span_units = np.array(
+            units = np.array(
                 [
                     self.udl([(a, a + length, 1.0)])
                     for a, length in zip(self.support_x[:-1], self.lengths)
                 ]
             )
+            # v1.03: a span has no effect on an independent part of the deck.
+            mask = self.coupled((self.support_x[:-1] + self.support_x[1:]) / 2)
+            self._span_units = units if mask is None else units * mask
         return self._span_units
 
     def influence_grid(self):

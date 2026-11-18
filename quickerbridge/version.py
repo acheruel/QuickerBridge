@@ -1,5 +1,5 @@
 """Single maintained source for release metadata."""
 
-APP_VERSION = "1.02"
-RELEASE_DATE = "2026-11-13"
+APP_VERSION = "1.03"
+RELEASE_DATE = "2026-11-18"
 AUTHOR = "Anthony Chéruel"

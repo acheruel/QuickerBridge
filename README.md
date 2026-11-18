@@ -10,7 +10,7 @@ No installation, no server, no data leaves your computer.
 
 ![QuickerBridge — envelopes of a two-span steel girder under CL-750-QC](docs/screenshots/envelopes.png)
 
-*Version 1.01 · 2026-10-17 · Anthony Chéruel · [Version history](CHANGELOG.md)*
+*Version 1.03 · 2026-11-18 · Anthony Chéruel · [Version history](CHANGELOG.md)*
 
 ## What it does
 
