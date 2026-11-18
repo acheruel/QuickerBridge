@@ -35,7 +35,7 @@ function axleCard(){
 function axleRange(values){const lo=Math.min(...values),hi=Math.max(...values);return Math.abs(hi-lo)<5e-4?fmt(lo,3):`${fmt(lo,3)}–${fmt(hi,3)}`;}
 function axleMiniHtml(){
  if(!axleData)return `<span>${t('axleComputing')}</span>`;
- const z=axleData.zones;return `<span>FT M <b>${axleRange(z.map(v=>v.FT_M))}</b></span><span>FT V <b>${axleRange(z.map(v=>v.FT_V))}</b></span>`;
+ const z=axleData.zones;return `<span>FT M <b>${axleRange(z.map(v=>v.FT_M))}</b></span><span>FT V <b>${axleRange(z.map(v=>v.FT_V_raw??v.FT_V))}</b></span>`;
 }
 function axleDerivedHtml(){
  if(!axleData)return `<span>${t('axleComputing')}</span>`;
@@ -94,9 +94,12 @@ function renderAxleResults(){
  }
  const head=`<colgroup><col class="axle-labelcol">${cols.map(()=>'<col>').join('')}</colgroup><thead><tr><th></th>${cols.map(c=>`<th>${c.label} <small>${c.sign==='+'?'M+':'M−'}</small></th>`).join('')}</tr></thead>`;
  // Applied FT by zone, for the selected girder and limit state.
- const zones=a.zones.map(z=>`<td><b>${fmt(z.FT_M,3)}</b></td>`),zonesV=a.zones.map(z=>`<td><b>${fmt(z.FT_V,3)}</b></td>`);
+ // v1.03: FT V is shown without the skew factor; Fs has its own row and the
+ // analysis applies FT V × Fs to the exterior-girder shear.
+ const zones=a.zones.map(z=>`<td><b>${fmt(z.FT_M,3)}</b></td>`),zonesV=a.zones.map(z=>`<td><b>${fmt(z.FT_V_raw??z.FT_V,3)}</b></td>`);
  let html=`<div class="axle-derived">${axleDerivedHtml()}</div>${axleWarningsHtml()}`;
  html+=`<h3>${t('axleZones')} · ${t(d.girder==='interior'?'interiorGirder':'exteriorGirder')} · ${t(d.state==='ULS'?'ulsState':'flsState')}</h3><table class="axle-table-view axle-zones"><colgroup><col class="axle-labelcol">${a.zones.map(()=>'<col>').join('')}</colgroup><thead><tr><th></th>${a.zones.map(z=>`<th>${axleWhere(z.where)} <small>${z.sign==='+'?'M+':'M−'} · ${fmt(z.x0,2)}–${fmt(z.x1,2)} m</small></th>`).join('')}</tr></thead><tbody><tr class="axle-ftrow"><th>FT M</th>${zones.join('')}</tr><tr class="axle-ftrow"><th>FT V</th>${zonesV.join('')}</tr><tr class="axle-fsrow"><th>Fs</th>${a.zones.map(z=>`<td>${Number.isFinite(z.Fs)?fmt(z.Fs,3):'·'}</td>`).join('')}</tr></tbody></table>`;
+ if(a.zones.some(z=>Math.abs(z.FT_V-(z.FT_V_raw??z.FT_V))>5e-4))html+=`<p class="help">${t('axleFsNote')}</p>`;
  const cell=(state,girder,effect,c,key)=>{const r=a.rows.find(r=>r.state===state&&r.girder===girder&&r.effect===effect&&r.where===c.where&&r.sign===c.sign);if(!r)return '<td class="axle-empty">·</td>';const ft=key==='FT'||key==='FT_Fs';return `<td class="${ft?'axle-ftcell':''}">${fmt(r[key],3)}${ft&&r.minimum_governs?'<sup>min</sup>':''}</td>`;};
  const row=(label,fn,cls='')=>`<tr class="${cls}"><th>${label}</th>${cols.map(fn).join('')}</tr>`;
  const group=label=>`<tr class="axle-group"><th colspan="${cols.length+1}">${label}</th></tr>`;
@@ -129,7 +132,7 @@ function axleChartMarks(key,X,G){
  const ft=result?.ft;if(!ft||!['V','M','D'].includes(key))return '';
  let svg='';ft.zones.forEach((z,i)=>{
   if(i)svg+=`<line x1="${X(z.x0)}" x2="${X(z.x0)}" y1="${G.top-G.u(12)}" y2="${G.bot+G.u(6)}" stroke="#c9a24f" stroke-dasharray="1.5 2.5"/>`;
-  svg+=`<text class="axle-mark" x="${X((z.x0+z.x1)/2)}" y="${G.top-G.u(4)}" text-anchor="middle">FT ${fmt(key==='V'?z.FT_V:z.FT_M,3)}</text>`;
+  svg+=`<text class="axle-mark" x="${X((z.x0+z.x1)/2)}" y="${G.top-G.u(4)}" text-anchor="middle">${key==='V'&&Math.abs(z.FT_V-(z.FT_V_raw??z.FT_V))>5e-4?'FT·Fs':'FT'} ${fmt(key==='V'?z.FT_V:z.FT_M,3)}</text>`;
  });
  return svg;
 }
@@ -277,3 +280,7 @@ Object.assign(words.en,{deck_steel_grid:'Steel grid deck on steel girders',deck_
    [fr?'R levier':'Lever R',fr?'Part d’un camion reprise par la poutre extérieure par la statique (règle du levier).':'Share of one truck carried by the exterior girder by statics (lever rule).']];
  };
 })();
+
+// ---- v1.03: the summary table shows FT V without the skew factor ----
+Object.assign(words.fr,{axleFsNote:'FT V est affiché sans le coefficient de biais. Le calcul applique FT V × Fs au cisaillement de la poutre (ou portion) extérieure.'});
+Object.assign(words.en,{axleFsNote:'FT V is shown without the skew factor. The analysis applies FT V × Fs to the shear of the exterior girder (or portion).'});

@@ -370,6 +370,8 @@ def zones(model: Model, rows, negative, fs):
     the rest of each span takes its M+ fraction. Shear uses the same zones:
     the pier shear fraction over a continuous pier, otherwise the span shear
     fraction (exterior girder: × Fs, conservatively over the whole zone).
+    ``FT_V`` is the applied factor (FT × Fs); ``FT_V_raw`` is FT alone, as
+    shown in the summary table next to Fs (v1.03).
     """
     d = model.distribution
     sel = {
@@ -402,6 +404,7 @@ def zones(model: Model, rows, negative, fs):
                     "where": f"span:{i + 1}",
                     "FT_M": sel[("moment", f"span:{i + 1}")]["FT"],
                     "FT_V": sel[("shear", f"span:{i + 1}")]["FT_Fs"],
+                    "FT_V_raw": sel[("shear", f"span:{i + 1}")]["FT"],
                     "Fs": fs[i],
                 }
             )
@@ -419,6 +422,7 @@ def zones(model: Model, rows, negative, fs):
                 "where": where,
                 "FT_M": sel[("moment", where)]["FT"],
                 "FT_V": shear["FT_Fs"],
+                "FT_V_raw": shear["FT"],
                 "Fs": max(fs[max(k - 1, 0)], fs[min(k, len(fs) - 1)]),
             }
         )

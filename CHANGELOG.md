@@ -1,5 +1,19 @@
 # QuickerBridge — version history
 
+## What's new in 1.03
+
+- **Independent structures no longer load each other.** On a bridge split into
+  independent parts (split pier, simple span, deck cut), the lane load of one part was
+  sometimes placed on a span of the other part: the effect there is zero, but rounding
+  noise (about 1e-12) passed for a favourable effect. Unit responses are now exactly zero
+  across a break between parts, for the lane load (spans that increase the effect) and for
+  the axles. The envelopes do not change (differences below 1e-9 kN·m); only the loaded
+  spans shown for a governing case, and the snapshot drawn from it, are corrected.
+- **FT summary table:** the shear fraction FT V is shown without the skew factor Fs, which
+  keeps its own row; a note recalls that the analysis applies FT V × Fs to the shear of the
+  exterior girder (or portion). The zone marks on the V diagram read "FT·Fs" when Fs > 1.
+- No change to the project schema (17).
+
 ## What's new in 1.02
 
 - **A bridge can arrive in the address.** `…/QuickerBridge/#project=<project JSON in
